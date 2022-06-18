@@ -1,0 +1,643 @@
+---
+title: Introduction to Julia
+author: Matthew Fishman
+date: June 18, 2022
+weave_options:
+  term: true
+---
+
+```julia; echo=false
+struct BeginDropdown
+  title::String
+end
+BeginDropdown() = BeginDropdown("")
+Base.show(io::IO, m::MIME"text/html", b::BeginDropdown) = write(io, "<details><summary  style=\"display:list-item\">$(b.title)</summary>")
+
+struct EndDropdown
+end
+Base.show(io::IO, m::MIME"text/html", e::EndDropdown) = write(io, "</details>")
+```
+
+---
+
+# Outline
+
+1. Why Julia?
+2. Getting started
+3. Useful references
+4. Basic types
+5. Tutorial
+6. Advanced topics
+
+---
+
+# 1. Why Julia?
+
+1. Julia is easy to code and fast to run!
+2. Fast like C/C++, expressive and dynamic like Python.
+3. "Batteries included": REPL, package manager, multidimensional arrays, linear algebra, plotting.
+4. Free and open source.
+5. Built with scientific computing in mind.
+
+! BeginDropdown("Benchmarks")
+![](benchmarks.svg)
+! EndDropdown()
+
+! BeginDropdown("Julia vs. C++ vs. Python")
+
+|            | Julia | C++ | Python |
+|:---------- | :---------- | :---------- |:------------|
+| Compilation | Just-in-time (JIT)    | Ahead-of-time (AOT) | Interpreted |
+| Typing | Static or dynamic    | Static | Dynamic |
+| Generic programming | Multiple dispatch    | Static dispatch | Single dispatch (object-oriented) |
+| Fast for-loops | ✅    | ✅ | ❌ |
+| Indexing | 1-based    | 0-based | 0-based |
+| Memory management | Automatic (garbage collected)    | Manual | Automatic (reference counted) |
+| Multithreading | ✅ (Threads.jl)    | ✅ (OpenMPI) | ❌ |
+| Distributed | ✅ (Distributed.jl and MPI.jl)    | ✅ (MPI) | ✅ (MPI) |
+| Debugger | ✅ | ✅ | ✅ |
+| Member functions | ❌ | ✅ | ✅ |
+| "Batteries included" | ✅  | ❌ | ✅ |
+| Full-language automatic differentiation | ✅  | ❌ | ❌ (Jax?) |
+| Package manager | ✅ | ❌ | ✅ |
+| First-class multidimensional Arrays | ✅    | ❌ | ✅ |
+| First-class linear algebra | ✅    | ❌ | ✅ |
+| Plug-and-play GPUs | ✅ | ❌ | ✅ |
+
+! EndDropdown()
+
+To test the speed, let's try estimating $\pi$ using the formula:
+
+$\pi = 4\left(1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \frac{1}{9} - \frac{1}{11} + \dots\right)$
+
+```julia
+function estimate_pi(n)
+  s = 1.0
+  for i in 1:n
+    if i % 2 == 1
+      si = -1 / (2i + 1)
+    else
+      si = 1 / (2i + 1)
+    end
+    s += si
+  end
+  return 4s
+end
+my_pi = estimate_pi(100_000_000)
+my_pi - pi
+```
+Julia provides simple tools for timing code:
+```julia
+@time estimate_pi(100_000_000)
+using BenchmarkTools
+@benchmark estimate_pi(100_000_000)
+```
+
+Here is the same function in C++:
+```
+double estimate_pi(int n) {
+  double s = 1.0;
+  double si;
+  for(int i = 1; i < n; i++) {
+    if(i % 2 == 1) {
+      si = -1.0 / (2.0 * i + 1.0);
+    }
+    else {
+      si = 1.0 / (2.0 * i + 1.0);
+    }
+    s += si;
+  }
+  return 4 * s;
+}
+```
+which takes a similar amount of time.
+
+---
+
+# 2. Getting started
+
+1. Download Julia from [https://julialang.org/downloads/](https://julialang.org/downloads/).
+2. Put Julia in your path.
+3. Run Julia and start typing commands in the REPL!
+
+---
+
+# 3. Useful references
+
+- Download Julia: [https://julialang.org/downloads/](https://julialang.org/downloads/)
+- Documentation: [https://docs.julialang.org/en/v1/](https://docs.julialang.org/en/v1/)
+- Performance tips: [https://docs.julialang.org/en/v1/manual/performance-tips/](https://docs.julialang.org/en/v1/manual/performance-tips/)
+- Julia Discourse: [https://discourse.julialang.org/](https://discourse.julialang.org/)
+- Tutorials: [https://julialang.org/learning/tutorials/](https://julialang.org/learning/tutorials/)
+  - ThinkJulia: [https://benlauwens.github.io/ThinkJulia.jl/latest/book.html](https://benlauwens.github.io/ThinkJulia.jl/latest/book.html)
+  - Julia for Python programmers: [https://www.machinelearningplus.com/julia/julia-programming-language-for-pythonistas-a-practical-tutorial/](https://www.machinelearningplus.com/julia/julia-programming-language-for-pythonistas-a-practical-tutorial/)
+
+---
+
+# 4. Basic types
+
+|            | Julia | C++ | Python |
+|:---------- | :---------- | :---------- |:------------|
+| Integer | 1    | 1 | 1 |
+| Floating point | 1.2    | 1.2 | 1.2 |
+| Complex | 1.2 + 3.3im | std::complex<double>(1.2, 3.3) | 1.2 + 3.3j |
+| String | "hello" | "hello" | 'hello' |
+| List | [1, "s", 3] | ❌ | [1, 's', 3] |
+| Vector | [1.1, 2.2, 3.1] | std::vector<float>{1.1, 2.2, 3.1} | numpy.array([1.1, 2.2, 3.1]) |
+| Matrix | [1.1 2.2; 3.3 4.2] | ❌ | numpy.array([[1.1, 2.2], [3.3, 4.2]]) |
+| Matrix multiplication | A * B | ❌ | A @ B |
+| Array | [1 2; 3 4;;; 5 6; 7 8] | ❌ | numpy.array([[[1, 2], [3, 4]], [[5, 6], [7, 8]]]) |
+| Array of zeros | zeros(Int, 3, 3, 3) | ❌ | numpy.zeros((3, 3, 3), dtype=int) |
+| Dictionary | Dict("X" => 2, "Y" => 3) | std::map<std::string,int>{{"X", 2}, {"Y", 3}} | {"X": 2, "Y": 3} |
+| Tuple | (1, -1) | std::tuple<int, int> {1, -1} | (1, -1) |
+| NamedTuple | (a=1, b=2, c=3) | ❌ | collections.namedtuple("nt", "a b c")(1, 2, 3) |
+| Ranges | 1:4 | ❌ | range(1, 5) |
+| Comprehensions | [i^2 for i in 1:4] | ❌ | [i**2 for i in range(1, 5)] |
+
+---
+
+# 5. Tutorial
+
+## Arithmatic
+
+```julia
+1 + 2
+1 - 2
+1.2 + 3.4
+```
+
+## Complex
+
+```julia
+complex(1.2, 3.4)
+1.2 + 3.4im
+typeof(1.2 + 3.4im)
+```
+
+## Get Help
+
+Type `?` at the Julia prompt to ask for help about a function or object:
+```julia; term = false, eval = false
+julia> ?
+
+help?> sin
+```
+
+## Type promotion
+
+```julia
+typeof(1)
+typeof(1.2)
+1 + 1.2
+typeof(1 + 1.2)
+2 * 1
+typeof(2 * 1)
+2 * 1.0
+typeof(2 * 1.0)
+```
+
+## Variables
+
+```julia
+x = 2
+y = 3
+z = x + y
+```
+
+By default, Julia will infer the types of the variables and generate
+optimal code for the given types (a process called "type inference").
+Julia types can be specified (but only inside of functions or other
+local scopes):
+
+```julia
+let
+  x::Int = 2
+  y::Int = 3
+  z::Int = x + y
+end
+```
+This can sometimes have implications for performance if it helps Julia reason about the types better.
+However, it is usually not necessary since the Julia compiler can infer the types automatically,
+like the C++ `auto` keyword:
+
+```c++
+int main() {
+  auto x = 2;
+  auto y = 3;
+  auto z = x + y;
+  return 0;
+}
+```
+
+## Unicode
+
+In Julia, you can use unicode characters for variables by typing backslash (`\`) followed
+by the name of the unicode character (often matching the names in $\LaTeX$) and then
+followed by pressing the `TAB` key:
+```julia
+pi
+π # \pi TAB
+typeof(π)
+θ = π / 2 # \theta TAB
+```
+See [https://docs.julialang.org/en/v1/manual/unicode-input/](https://docs.julialang.org/en/v1/manual/unicode-input/
+) for a comprehensive list of supported unicode characters.
+
+The Julia REPL supports unicode character completion by default.
+Most standard IDEs (like VS Code, Vim, Emacs, Notepad++, or other text editors)
+don't support unicode character completion by default, but there are Julia
+extensions available which add support for 
+
+## Strings
+
+```julia
+string1 = "hello "
+string2 = "world!"
+string1 * string2
+string1^4
+x = 12
+"The answer is always $x"
+```
+
+## Functions
+
+```julia
+sin(0.2)
+sin(90 / 360 * 2 * π)
+exp(log(x + 1))
+```
+
+## Defining custom functions
+
+Writing generic Julia functions is as simple as:
+```julia
+function plus1(x)
+  return x + 1
+end
+plus1(2)
+plus1(2.3)
+plus1("X") # Error
+```
+
+You can also use the following shorthand notation for defining functions:
+```julia
+plus1(x) = x + 1
+```
+
+You can make a specialized version for certain types:
+```julia
+function plus1(x::String)
+  return x * " + 1"
+end
+plus1("X")
+```
+
+Julia will compile specialized code for each type of input:
+```julia; echo=false
+using InteractiveUtils
+```
+```julia
+@code_native plus1(1)
+@code_native plus1(1.3)
+@code_native plus1("X")
+```
+This is what is referred to as just-in-time (JIT) compilation, where Julia compiles
+a specialized function for each **type** of input.
+
+Generic functions in Julia are similar to C++ templated functions:
+```c++
+template<typename T>
+auto plus1(T x) {
+  return x + 1;
+};
+
+auto plus1(std::string x) {
+  return x + " + 1";
+};
+```
+However, it is easier in Julia to dynamically define overloads of functions
+with mixtures of different (potentially user-defined) types, as we will
+see later.
+
+## Arrays
+
+Julia has great built-in support for multidimensional arrays.
+
+Julia Arrays can accept any data type, and the storage will be specialized
+based on the inputs:
+```julia
+numbers = [10, 20, 30, 40]
+typeof(numbers)
+strings = ["X", "Y", "Z", "W"]
+typeof(strings)
+any = [10, "Y", 30, "W"]
+typeof(any)
+```
+Note that Julia Vectors are just the special case of multidimensional Arrays with 1 dimension,
+and you can reshape your data into other dimensions:
+```julia
+reshape(numbers, 2, 2)
+```
+Julia indexing starts at one:
+```julia
+numbers[1]
+strings[2]
+```
+Setting elements is restricted to the type of the array:
+```julia
+numbers[1] = 1
+numbers
+numbers[1] = "A" # Not allowed
+any[3] = 1 + 2im
+any
+```
+You can apply a function to each element of an array using
+the broadcasting `.` syntax:
+```julia
+sin.(numbers)
+```
+
+There are many high-level functions supported for Julia Arrays,
+similar to the plethora of functions available for lists and numpy
+arrays in Python and C++ standard template library functions.
+
+Just to pick one example, we have:
+```julia
+sort([23, 14, 32, 41])
+digits(1234)
+sort([23, 14, 32, 41]; by=x -> first(digits(x)))
+```
+
+There are also high level constructors for multidimensional
+arrays:
+```julia
+A = randn(2, 2, 2)
+A[1, 2, 1]
+zeros(2, 2, 2)
+```
+as well as high level wrappers for matrix operations (accessing
+low level, highly optimized libraries like BLAS and LAPACK):
+```julia
+A = randn(2, 2)
+B = randn(2, 2)
+A * B
+A * B' # ' denotes conjugate transpose
+using LinearAlgebra
+U, S, V = svd(A)
+U * Diagonal(S) * V' ≈ A
+Q, R = qr(A)
+Q * R ≈ A
+```
+
+## Conditionals
+
+```julia
+function is_smaller_than_3(x)
+  if x < 3
+    println("The input is small")
+  else
+    println("The input is big")
+  end
+  return nothing
+end
+
+is_smaller_than_3(1.2)
+is_smaller_than_3(3.4)
+```
+
+## Installing packages
+
+Julia has a great built-in package manage, which is accessed through the standard
+Julia `Pkg` module that is shipped with Julia.
+
+For example, say we want to use Julia's native symbolic algebra system,
+`Symbolics.jl`. We just need to do the following:
+```julia
+using Pkg
+Pkg.add("Symbolics")
+using Symbolics
+@variables x y
+z = expand((x + y)^2)
+substitute(z, Dict(y => 3))
+```
+
+## Plotting
+
+Julia has a variety of plotting functionalities.
+
+A quick way to do some plotting right in your terminal is the wonderful
+`UnicodePlots.jl` package:
+```julia
+using Pkg
+Pkg.add("UnicodePlots")
+using UnicodePlots
+lineplot(sin, 0:0.1:2π)
+```
+
+There is also the standard `Plots.jl` package, which provides a common
+interface for a variety of different plotting backends:
+```julia; echo=false
+# https://github.com/JunoLab/Weave.jl/issues/436
+ENV["GKSwstype"]="nul"
+```
+```julia
+using Pkg
+Pkg.add("Plots")
+using Plots
+plot(sin, 0:0.1:2π);
+```
+```julia; echo=false
+ENV["GKSwstype"]="gksqt"
+```
+
+! BeginDropdown("Mitigating compilation time")
+
+JIT compilation can lead to long initial load times when first loading a package
+and calling functions from a package. This is particularly noticable for the standard
+plotting package Plots.jl, as well as automatic differentiation packages like Zygote.jl
+and calling some functions from our tensor network library, ITensors.jl. This is just
+a consequence that Julia is a compiled language, so Julia has to compile code just like
+you would have to compile code in C++, though it happens automatically in the background.
+However, this can be jarring for users coming from interpreted languages like Python,
+which does not compile code as aggressively as C++ or Julia at the expense of slower
+runtimes.
+
+One way to mitigate this issue is to run your code from the REPL and keep the REPL
+open. You will encounter compilation times the first time
+you run your code, but if you keep the REPL open those compiled functions
+will be cached for later use.
+
+Additionally, you can use PackageCompiler.jl
+([https://julialang.github.io/PackageCompiler.jl/stable/examples/plots.html](https://julialang.github.io/PackageCompiler.jl/stable/examples/plots.html))
+which allows for ahead-of-time (AOT) compilation of a set of functions
+from a Julia package.
+
+Compilation time is a big focus of the core Julia developers and Julia library
+developers, and tools for performing more automated ahead-of-time compilation
+will improve as Julia matures!
+
+! EndDropdown()
+
+## Custom types
+
+As an example of a custom type, we will define a `Polar` type,
+which is a representation of a complex number $z = x + iy$
+in the polar representation $z = re^{i\theta}$.
+
+See Wikipedia (
+[https://en.wikipedia.org/wiki/Complex_number#Polar_complex_plane](https://en.wikipedia.org/wiki/Complex_number#Polar_complex_plane),
+[https://en.wikipedia.org/wiki/Polar_coordinate_system#Complex_numbers](https://en.wikipedia.org/wiki/Polar_coordinate_system#Complex_numbers))
+for more details.
+```julia
+struct Polar <: Number
+  r::Float64
+  θ::Float64
+end
+z1 = Polar(1.2, π / 2)
+Base.show(io::IO, z::Polar) = print(io, z.r, " * exp(", z.θ, "im)")
+z1
+```
+Now we will define some operations for our type. For example
+we can start with multiplication of two polar numbers:
+```julia
+z2 = Polar(3.3, π / 3)
+z1 * z2
+import Base: * # Overload the behavior of * for our new type
+*(z1::Polar, z2::Polar) = Polar(z1.r * z2.r, z1.θ + z2.θ)
+z1 * z2
+```
+This allows us to take integer powers of polar numbers:
+```julia
+z1 ^ 3
+```
+We can also support multiplying by real numbers:
+```julia
+2.3 * z1
+*(z1::Real, z2::Polar) = Polar(z1 * z2.r, z2.θ)
+2.3 * z1
+*(z1::Polar, z2::Real) = Polar(z1.r * z2, z1.θ)
+z1 * 2.3
+```
+This kind of function overloading is referred to as "multiple dispatch":
+we are defining unique behavior for an existing function for a mixture
+of different types, which Julia can call dynamically at runtime.
+
+You can see Stefan Karpinski's JuliaCon talk
+([youtube.com/watch?v=kc9HwsxE1OY](youtube.com/watch?v=kc9HwsxE1OY))
+for a deeper dive into multiple dispatch and how it differs from
+generic template programming in C++ and the object-oriented single dispatch
+system in Python.
+
+We can even put our new type into other Julia data structures, like a `Matrix`:
+```julia
+A = [z1 z2; z2 z1]
+3 * A
+```
+We can try using this in some other operations but in general we will find that
+we are missing some necessary function definitions:
+```julia
+A / 2
+A * A
+```
+
+### **Custom Types Exercise**
+
+As an exercise, define other operations like division of two
+`Polar` numbers (`z1 / z2`), $n$-th root of `Polar` numbers `z^(1 / n)`,
+the addition of two `Polar` numbers `z1 + z2`, etc.
+
+! BeginDropdown("Custom Types Exercise Solution")
+
+Division of two `Polar` numbers:
+```julia
+z1 / z2
+import Base: /
+/(z1::Polar, z2::Polar) = Polar(z1.r / z2.r, z1.θ - z2.θ)
+z1 / z2
+```
+
+Raise a `Polar` number to a fractional power:
+```julia
+z1^(1 / 3)
+import Base: ^
+^(z::Polar, n::Float64) = Polar(z.r^n, n * z.θ)
+z1^(1 / 3)
+```
+
+Add two `Polar` numbers with `+`:
+```julia
+z1 + z2
+import Base: +
+function +(z1::Polar, z2::Polar)
+  real = z1.r * cos(z1.θ) + z2.r * cos(z2.θ)
+  imag = z1.r * sin(z1.θ) + z2.r * sin(z2.θ)
+  z = real + imag * im
+  return Polar(abs(z), angle(z))
+end
+z1 + z2
+```
+
+Defining `*` and `+` is all that is needed for Julia's
+generic matrix multiplication to work for matrices of `Polar`
+numbers:
+```julia
+A = [z1 z2; z2 z1]
+A * A
+A ^ 3
+```
+For efficiency, it may be better to allow `+(::Polar, ::Polar)`
+return a `ComplexF64`, since converting back to the `Polar` form
+adds some extra cost. In general, the `Polar` form will be faster
+for multiplication while the traditional complex representation
+will be faster for addition.
+
+! EndDropdown()
+
+# 6. Advanced topics
+
+## Calling Python from Julia
+
+Julia has great functionality for calling out to other languages, such as
+`C`, `Fortran`, `Python`, and `R`.
+
+For calling out to Python, you can use `PythonCall.jl` (which is the next
+generation version of `PyCall.jl`).
+
+For example:
+```julia
+using Pkg
+Pkg.add("PythonCall")
+using PythonCall
+Pkg.add("CondaPkg")
+using CondaPkg
+CondaPkg.add("numpy")
+np = pyimport("numpy")
+A = [1 2; 3 4]
+B = [5 6; 7 8]
+Cnp = np.einsum("ij,jk->ik", np.array(A), np.array(B))
+C = pyconvert(Matrix, Cnp)
+```
+
+## Automatic differentiation
+
+Julia has impressive support for automatic differentation of a large promotion
+of the language. For example:
+
+```julia
+using Pkg
+Pkg.add("Zygote")
+using Zygote
+sin'(π / 6), cos(π / 6)
+function f(x)
+  M = [exp(x) exp(-x); exp(-x) exp(x)]
+  return tr(M * M)
+end
+f'(0.2)
+---
+
+# Other important topics we don't have time to cover:
+
+ - Multithreading (Threads.jl).
+ - Profiling (ProfileView.jl, PProf.jl).
+ - Type stability (@code_warntype).
+ - GPUs (CUDA.jl).
