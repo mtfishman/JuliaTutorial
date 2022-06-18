@@ -43,7 +43,7 @@ Base.show(io::IO, m::MIME"text/html", e::EndDropdown) = write(io, "</details>")
 5. Built with scientific computing in mind.
 
 ! BeginDropdown("Benchmarks")
-![](benchmarks.svg)
+![](benchmarks.png)
 ! EndDropdown()
 
 ! BeginDropdown("Julia vs. C++ vs. Python")
@@ -114,6 +114,20 @@ double estimate_pi(int n) {
 }
 ```
 which takes a similar amount of time.
+
+And here is the function in Python:
+```python
+def estimate_pi(n):
+    s = 1.0
+    for i in range(1, n + 1):
+        if i % 2 == 1:
+            si = -1 / (2 * i + 1)
+        else:
+            si = 1 / (2 * i + 1)
+        s += si
+    return 4 * s
+```
+which I find takes 9.67 seconds on my laptop.
 
 ---
 
@@ -305,7 +319,7 @@ function plus1(x)
 end
 plus1(2)
 plus1(2.3)
-plus1("X") # Error
+# plus1("X") # Error
 ```
 
 You can also use the following shorthand notation for defining functions:
@@ -326,6 +340,7 @@ Julia will compile specialized code for each type of input:
 using InteractiveUtils
 ```
 ```julia
+methods(plus1)
 @code_native plus1(1)
 @code_native plus1(1.3)
 @code_native plus1("X")
@@ -376,7 +391,7 @@ Setting elements is restricted to the type of the array:
 ```julia
 numbers[1] = 1
 numbers
-numbers[1] = "A" # Not allowed
+# numbers[1] = "A" # Error, not allowed
 any[3] = 1 + 2im
 any
 ```
@@ -530,7 +545,7 @@ Now we will define some operations for our type. For example
 we can start with multiplication of two polar numbers:
 ```julia
 z2 = Polar(3.3, π / 3)
-z1 * z2
+# z1 * z2 # Error, not defined
 import Base: * # Overload the behavior of * for our new type
 *(z1::Polar, z2::Polar) = Polar(z1.r * z2.r, z1.θ + z2.θ)
 z1 * z2
@@ -541,9 +556,9 @@ z1 ^ 3
 ```
 We can also support multiplying by real numbers:
 ```julia
-2.3 * z1
+# 2.3 * z1 # Error, not defined
 *(z1::Real, z2::Polar) = Polar(z1 * z2.r, z2.θ)
-2.3 * z1
+# 2.3 * z1 # Error, not defined
 *(z1::Polar, z2::Real) = Polar(z1.r * z2, z1.θ)
 z1 * 2.3
 ```
@@ -552,7 +567,7 @@ we are defining unique behavior for an existing function for a mixture
 of different types, which Julia can call dynamically at runtime.
 
 You can see Stefan Karpinski's JuliaCon talk
-([youtube.com/watch?v=kc9HwsxE1OY](youtube.com/watch?v=kc9HwsxE1OY))
+([https://www.youtube.com/watch?v=kc9HwsxE1OY](https://www.youtube.com/watch?v=kc9HwsxE1OY))
 for a deeper dive into multiple dispatch and how it differs from
 generic template programming in C++ and the object-oriented single dispatch
 system in Python.
@@ -565,8 +580,8 @@ A = [z1 z2; z2 z1]
 We can try using this in some other operations but in general we will find that
 we are missing some necessary function definitions:
 ```julia
-A / 2
-A * A
+# A / 2 # Error, not defined
+# A * A # Error, not defined
 ```
 
 ### **Custom Types Exercise**
@@ -579,7 +594,7 @@ the addition of two `Polar` numbers `z1 + z2`, etc.
 
 Division of two `Polar` numbers:
 ```julia
-z1 / z2
+# z1 / z2 # Error, not defined
 import Base: /
 /(z1::Polar, z2::Polar) = Polar(z1.r / z2.r, z1.θ - z2.θ)
 z1 / z2
@@ -587,7 +602,7 @@ z1 / z2
 
 Raise a `Polar` number to a fractional power:
 ```julia
-z1^(1 / 3)
+# z1^(1 / 3) # Error, not defined
 import Base: ^
 ^(z::Polar, n::Float64) = Polar(z.r^n, n * z.θ)
 z1^(1 / 3)
@@ -595,7 +610,7 @@ z1^(1 / 3)
 
 Add two `Polar` numbers with `+`:
 ```julia
-z1 + z2
+# z1 + z2 Error, not defined
 import Base: +
 function +(z1::Polar, z2::Polar)
   real = z1.r * cos(z1.θ) + z2.r * cos(z2.θ)
@@ -643,7 +658,9 @@ CondaPkg.add("numpy")
 np = pyimport("numpy")
 A = [1 2; 3 4]
 B = [5 6; 7 8]
-Cnp = np.einsum("ij,jk->ik", np.array(A), np.array(B))
+np.array(A)
+np.array(B)
+Cnp = np.einsum("ij,jk->ik", A, B)
 C = pyconvert(Matrix, Cnp)
 ```
 
@@ -661,7 +678,10 @@ function f(x)
   M = [exp(x) exp(-x); exp(-x) exp(x)]
   return tr(M * M)
 end
-f'(0.2)
+x = 0.2
+f'(x)
+δ = 1e-8;
+(f(x) - f(x - δ)) / δ # Compare against finite difference
 ```
 
 ---

@@ -90,7 +90,7 @@ function plus1(x)
 end
 plus1(2)
 plus1(2.3)
-plus1("X") # Error
+# plus1("X") # Error
 
 
 plus1(x) = x + 1
@@ -105,6 +105,7 @@ plus1("X")
 using InteractiveUtils
 
 
+methods(plus1)
 @code_native plus1(1)
 @code_native plus1(1.3)
 @code_native plus1("X")
@@ -127,7 +128,7 @@ strings[2]
 
 numbers[1] = 1
 numbers
-numbers[1] = "A" # Not allowed
+# numbers[1] = "A" # Error, not allowed
 any[3] = 1 + 2im
 any
 
@@ -206,7 +207,7 @@ z1
 
 
 z2 = Polar(3.3, π / 3)
-z1 * z2
+# z1 * z2 # Error, not defined
 import Base: * # Overload the behavior of * for our new type
 *(z1::Polar, z2::Polar) = Polar(z1.r * z2.r, z1.θ + z2.θ)
 z1 * z2
@@ -215,9 +216,9 @@ z1 * z2
 z1 ^ 3
 
 
-2.3 * z1
+# 2.3 * z1 # Error, not defined
 *(z1::Real, z2::Polar) = Polar(z1 * z2.r, z2.θ)
-2.3 * z1
+# 2.3 * z1 # Error, not defined
 *(z1::Polar, z2::Real) = Polar(z1.r * z2, z1.θ)
 z1 * 2.3
 
@@ -226,23 +227,23 @@ A = [z1 z2; z2 z1]
 3 * A
 
 
-A / 2
-A * A
+# A / 2 # Error, not defined
+# A * A # Error, not defined
 
 
-z1 / z2
+# z1 / z2 # Error, not defined
 import Base: /
 /(z1::Polar, z2::Polar) = Polar(z1.r / z2.r, z1.θ - z2.θ)
 z1 / z2
 
 
-z1^(1 / 3)
+# z1^(1 / 3) # Error, not defined
 import Base: ^
 ^(z::Polar, n::Float64) = Polar(z.r^n, n * z.θ)
 z1^(1 / 3)
 
 
-z1 + z2
+# z1 + z2 Error, not defined
 import Base: +
 function +(z1::Polar, z2::Polar)
   real = z1.r * cos(z1.θ) + z2.r * cos(z2.θ)
@@ -267,7 +268,9 @@ CondaPkg.add("numpy")
 np = pyimport("numpy")
 A = [1 2; 3 4]
 B = [5 6; 7 8]
-Cnp = np.einsum("ij,jk->ik", np.array(A), np.array(B))
+np.array(A)
+np.array(B)
+Cnp = np.einsum("ij,jk->ik", A, B)
 C = pyconvert(Matrix, Cnp)
 
 
@@ -280,4 +283,6 @@ function f(x)
   return tr(M * M)
 end
 f'(0.2)
+δ = 1e-8
+(f(x) - f(x - δ)) / δ # Compare against finite difference
 
