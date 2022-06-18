@@ -7,6 +7,9 @@ weave_options:
 ---
 
 ```julia; echo=false
+using Random
+Random.seed!(1234)
+
 struct BeginDropdown
   title::String
 end
@@ -177,10 +180,36 @@ typeof(1.2 + 3.4im)
 ## Get Help
 
 Type `?` at the Julia prompt to ask for help about a function or object:
-```julia; term = false, eval = false
+```
 julia> ?
 
 help?> sin
+search: sin sinh sind sinc sinpi sincos sincosd sincospi asin using isinf asinh asind isinteger
+
+  sin(x)
+
+
+  Compute sine of x, where x is in radians.
+
+  See also [sind], [sinpi], [sincos], [cis].
+
+  ─────────────────────────────────────────────────────────────────────────────────────────────────
+
+  sin(A::AbstractMatrix)
+
+
+  Compute the matrix sine of a square matrix A.
+
+  If A is symmetric or Hermitian, its eigendecomposition (eigen) is used to compute the sine.
+  Otherwise, the sine is determined by calling exp.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia> sin(fill(1.0, (2,2)))
+  2×2 Matrix{Float64}:
+   0.454649  0.454649
+   0.454649  0.454649
 ```
 
 ## Type promotion
@@ -633,6 +662,8 @@ function f(x)
   return tr(M * M)
 end
 f'(0.2)
+```
+
 ---
 
 # Other important topics we don't have time to cover:

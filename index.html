@@ -734,20 +734,20 @@ estimate_pi (generic function with 1 method)
 
 <pre class='hljl'>
 <span class='hljl-nB'>julia&gt; </span><span class='hljl-nd'>@time</span><span class='hljl-t'> </span><span class='hljl-nf'>estimate_pi</span><span class='hljl-p'>(</span><span class='hljl-ni'>100_000_000</span><span class='hljl-p'>)</span><span class='hljl-t'>
-  0.097353 seconds
+  0.096345 seconds
 3.141592663589326
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-k'>using</span><span class='hljl-t'> </span><span class='hljl-n'>BenchmarkTools</span><span class='hljl-t'>
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-nd'>@benchmark</span><span class='hljl-t'> </span><span class='hljl-nf'>estimate_pi</span><span class='hljl-p'>(</span><span class='hljl-ni'>100_000_000</span><span class='hljl-p'>)</span><span class='hljl-t'>
-BenchmarkTools.Trial: 51 samples with 1 evaluation.
- Range (min … max):  94.519 ms … 114.926 ms  ┊ GC (min … max): 0.00% … 0.00%
- Time  (median):     97.320 ms               ┊ GC (median):    0.00%
- Time  (mean ± σ):   99.465 ms ±   4.499 ms  ┊ GC (mean ± σ):  0.00% ± 0.00%
+BenchmarkTools.Trial: 52 samples with 1 evaluation.
+ Range (min … max):  94.408 ms … 102.363 ms  ┊ GC (min … max): 0.00% … 0.00%
+ Time  (median):     97.737 ms               ┊ GC (median):    0.00%
+ Time  (mean ± σ):   97.833 ms ±   1.939 ms  ┊ GC (mean ± σ):  0.00% ± 0.00%
 
-  █       ▃▁▁ ▁             ▁                                   
-  █▄▄▁▁▄▁▄███▇█▄▁▄▁▄▁▄▄▄▁▁▁▁█▁▄▁▄▄▄▄▁▁▁▄▁▁▁▁▄▁▁▇▁▁▁▄▁▄▁▁▁▄▄▇▁▄ ▁
-  94.5 ms         Histogram: frequency by time          107 ms &lt;
+             ▄▁ ▄▄ █ ▁       ▄   █ ▁  ▄                      ▁  
+  ▆▁▆▁▁▁▁▆▁▆▁██▆██▁█▁█▁▆▆▁▆▁▆█▁▁▁█▁█▆▆█▆▁▁▁▆▆▁▆▆▁▁▁▆▆▆▁▁▆▁▁▁▁█ ▁
+  94.4 ms         Histogram: frequency by time          102 ms &lt;
 
  Memory estimate: 0 bytes, allocs estimate: 0.</span>
 </pre>
@@ -831,15 +831,35 @@ ComplexF64 (alias for Complex{Float64})</span>
 
 <h2>Get Help</h2>
 <p>Type <code>?</code> at the Julia prompt to ask for help about a function or object:</p>
+<pre><code>julia&gt; ?
+
+help?&gt; sin
+search: sin sinh sind sinc sinpi sincos sincosd sincospi asin using isinf asinh asind isinteger
+
+  sin&#40;x&#41;
 
 
-<pre class='hljl'>
-<span class='hljl-n'>julia</span><span class='hljl-oB'>&gt;</span><span class='hljl-t'> </span><span class='hljl-oB'>?</span><span class='hljl-t'>
+  Compute sine of x, where x is in radians.
 
-</span><span class='hljl-n'>help</span><span class='hljl-oB'>?&gt;</span><span class='hljl-t'> </span><span class='hljl-n'>sin</span>
-</pre>
+  See also &#91;sind&#93;, &#91;sinpi&#93;, &#91;sincos&#93;, &#91;cis&#93;.
+
+  ─────────────────────────────────────────────────────────────────────────────────────────────────
+
+  sin&#40;A::AbstractMatrix&#41;
 
 
+  Compute the matrix sine of a square matrix A.
+
+  If A is symmetric or Hermitian, its eigendecomposition &#40;eigen&#41; is used to compute the sine.
+  Otherwise, the sine is determined by calling exp.
+
+  Examples
+  ≡≡≡≡≡≡≡≡≡≡
+
+  julia&gt; sin&#40;fill&#40;1.0, &#40;2,2&#41;&#41;&#41;
+  2×2 Matrix&#123;Float64&#125;:
+   0.454649  0.454649
+   0.454649  0.454649</code></pre>
 <h2>Type promotion</h2>
 
 <pre class='hljl'>
@@ -1030,7 +1050,7 @@ plus1 (generic function with 2 methods)
 ; │ @ julia_tutorial.jmd:2 within `plus1`
 ; │┌ @ basic.jl:260 within `*`
 	movq	%rax, (%rsp)
-	movabsq	$140513956914000, %rax          # imm = 0x7FCBF47CE350
+	movabsq	$140562374580368, %rax          # imm = 0x7FD73A67D890
 	movq	%rax, 8(%rsp)
 	movabsq	$string, %rax
 	movabsq	$jl_system_image_data, %rdi
@@ -1184,15 +1204,15 @@ Closest candidates are:
 <span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>randn</span><span class='hljl-p'>(</span><span class='hljl-ni'>2</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-p'>)</span><span class='hljl-t'>
 2×2×2 Array{Float64, 3}:
 [:, :, 1] =
-  0.449125   0.938149
- -0.739362  -1.47338
+  0.818994   1.38952
+ -0.314004  -0.415644
 
 [:, :, 2] =
- 0.0865691   1.26993
- 1.59448    -0.365879
+  1.44226  -0.787154
+ -1.34523   0.226703
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-p'>[</span><span class='hljl-ni'>1</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>1</span><span class='hljl-p'>]</span><span class='hljl-t'>
-0.9381493907541044
+1.3895208630903928
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-nf'>zeros</span><span class='hljl-p'>(</span><span class='hljl-ni'>2</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-p'>)</span><span class='hljl-t'>
 2×2×2 Array{Float64, 3}:
@@ -1210,23 +1230,23 @@ Closest candidates are:
 <pre class='hljl'>
 <span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>randn</span><span class='hljl-p'>(</span><span class='hljl-ni'>2</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-p'>)</span><span class='hljl-t'>
 2×2 Matrix{Float64}:
- -1.76437   -0.834396
-  0.418102   0.313693
+ -1.36858   0.754024
+  0.978923  1.455
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>B</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>randn</span><span class='hljl-p'>(</span><span class='hljl-ni'>2</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-p'>)</span><span class='hljl-t'>
 2×2 Matrix{Float64}:
- 0.649641  0.261053
- 0.457275  0.455455
+  1.67502   -0.867937
+ -0.830545   0.805268
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>B</span><span class='hljl-t'>
 2×2 Matrix{Float64}:
- -1.52775  -0.840622
-  0.41506   0.25202
+ -2.91864   1.79503
+  0.431267  0.322022
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>B</span><span class='hljl-oB'>&#39;</span><span class='hljl-t'> </span><span class='hljl-cs'># &#39; denotes conjugate transpose</span><span class='hljl-t'>
 2×2 Matrix{Float64}:
- -1.36403   -1.18683
-  0.353507   0.334061
+ -2.94684   1.74386
+  0.376861  0.358626
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-k'>using</span><span class='hljl-t'> </span><span class='hljl-n'>LinearAlgebra</span><span class='hljl-t'>
 
@@ -1234,16 +1254,16 @@ Closest candidates are:
 LinearAlgebra.SVD{Float64, Float64, Matrix{Float64}}
 U factor:
 2×2 Matrix{Float64}:
- -0.967093  0.254425
-  0.254425  0.967093
+ -0.320947  0.947097
+  0.947097  0.320947
 singular values:
 2-element Vector{Float64}:
- 2.017954836903815
- 0.10139327572082077
+ 1.7769464987955474
+ 1.5360141296365417
 Vt factor:
 2×2 Matrix{Float64}:
-  0.898277  0.43943
- -0.43943   0.898277
+  0.768946  0.639314
+ -0.639314  0.768946
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>U</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-nf'>Diagonal</span><span class='hljl-p'>(</span><span class='hljl-n'>S</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>V</span><span class='hljl-oB'>&#39;</span><span class='hljl-t'> </span><span class='hljl-oB'>≈</span><span class='hljl-t'> </span><span class='hljl-n'>A</span><span class='hljl-t'>
 true
@@ -1252,12 +1272,12 @@ true
 LinearAlgebra.QRCompactWY{Float64, Matrix{Float64}}
 Q factor:
 2×2 LinearAlgebra.QRCompactWYQ{Float64, Matrix{Float64}}:
- -0.973052  0.230584
-  0.230584  0.973052
+ -0.813349  0.581776
+  0.581776  0.813349
 R factor:
 2×2 Matrix{Float64}:
- 1.81323  0.884243
- 0.0      0.112841
+ 1.68265  0.2332
+ 0.0      1.6221
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>Q</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>R</span><span class='hljl-t'> </span><span class='hljl-oB'>≈</span><span class='hljl-t'> </span><span class='hljl-n'>A</span><span class='hljl-t'>
 true</span>
@@ -1374,7 +1394,7 @@ x^2 + y^2 + 2x*y
        </span><span class='hljl-k'>end</span><span class='hljl-t'>
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>Polar</span><span class='hljl-p'>(</span><span class='hljl-nfB'>1.2</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>π</span><span class='hljl-t'> </span><span class='hljl-oB'>/</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-p'>)</span><span class='hljl-t'>
-Main.##WeaveSandBox#316.Polar(1.2, 1.5707963267948966)
+Main.##WeaveSandBox#343.Polar(1.2, 1.5707963267948966)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>Base</span><span class='hljl-oB'>.</span><span class='hljl-nf'>show</span><span class='hljl-p'>(</span><span class='hljl-n'>io</span><span class='hljl-oB'>::</span><span class='hljl-n'>IO</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z</span><span class='hljl-oB'>::</span><span class='hljl-n'>Polar</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>print</span><span class='hljl-p'>(</span><span class='hljl-n'>io</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z</span><span class='hljl-oB'>.</span><span class='hljl-n'>r</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-s'>&quot; * exp(&quot;</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z</span><span class='hljl-oB'>.</span><span class='hljl-n'>θ</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-s'>&quot;im)&quot;</span><span class='hljl-p'>)</span><span class='hljl-t'>
 
@@ -1389,12 +1409,12 @@ Main.##WeaveSandBox#316.Polar(1.2, 1.5707963267948966)
 3.3 * exp(1.0471975511965976im)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-t'>
-Error: * not defined for Main.##WeaveSandBox#316.Polar
+Error: * not defined for Main.##WeaveSandBox#343.Polar
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-k'>import</span><span class='hljl-t'> </span><span class='hljl-n'>Base</span><span class='hljl-oB'>:</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-cs'># Overload the behavior of * for our new type</span><span class='hljl-t'>
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-oB'>*</span><span class='hljl-p'>(</span><span class='hljl-n'>z1</span><span class='hljl-oB'>::</span><span class='hljl-n'>Polar</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-oB'>::</span><span class='hljl-n'>Polar</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>Polar</span><span class='hljl-p'>(</span><span class='hljl-n'>z1</span><span class='hljl-oB'>.</span><span class='hljl-n'>r</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-oB'>.</span><span class='hljl-n'>r</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z1</span><span class='hljl-oB'>.</span><span class='hljl-n'>θ</span><span class='hljl-t'> </span><span class='hljl-oB'>+</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-oB'>.</span><span class='hljl-n'>θ</span><span class='hljl-p'>)</span><span class='hljl-t'>
-* (generic function with 967 methods)
+* (generic function with 997 methods)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-t'>
 3.9599999999999995 * exp(2.617993877991494im)</span>
@@ -1411,16 +1431,16 @@ Error: * not defined for Main.##WeaveSandBox#316.Polar
 
 <pre class='hljl'>
 <span class='hljl-nB'>julia&gt; </span><span class='hljl-nfB'>2.3</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>z1</span><span class='hljl-t'>
-Error: promotion of types Float64 and Main.##WeaveSandBox#316.Polar failed to change any arguments
+Error: promotion of types Float64 and Main.##WeaveSandBox#343.Polar failed to change any arguments
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-oB'>*</span><span class='hljl-p'>(</span><span class='hljl-n'>z1</span><span class='hljl-oB'>::</span><span class='hljl-n'>Real</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-oB'>::</span><span class='hljl-n'>Polar</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>Polar</span><span class='hljl-p'>(</span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-oB'>.</span><span class='hljl-n'>r</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-oB'>.</span><span class='hljl-n'>θ</span><span class='hljl-p'>)</span><span class='hljl-t'>
-* (generic function with 968 methods)
+* (generic function with 998 methods)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-nfB'>2.3</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>z1</span><span class='hljl-t'>
 2.76 * exp(1.5707963267948966im)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-oB'>*</span><span class='hljl-p'>(</span><span class='hljl-n'>z1</span><span class='hljl-oB'>::</span><span class='hljl-n'>Polar</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-oB'>::</span><span class='hljl-n'>Real</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>Polar</span><span class='hljl-p'>(</span><span class='hljl-n'>z1</span><span class='hljl-oB'>.</span><span class='hljl-n'>r</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z1</span><span class='hljl-oB'>.</span><span class='hljl-n'>θ</span><span class='hljl-p'>)</span><span class='hljl-t'>
-* (generic function with 969 methods)
+* (generic function with 999 methods)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-nfB'>2.3</span><span class='hljl-t'>
 2.76 * exp(1.5707963267948966im)</span>
@@ -1432,12 +1452,12 @@ Error: promotion of types Float64 and Main.##WeaveSandBox#316.Polar failed to ch
 
 <pre class='hljl'>
 <span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-p'>[</span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-p'>;</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-t'> </span><span class='hljl-n'>z1</span><span class='hljl-p'>]</span><span class='hljl-t'>
-2×2 Matrix{Main.##WeaveSandBox#316.Polar}:
+2×2 Matrix{Main.##WeaveSandBox#343.Polar}:
  1.2 * exp(1.5708im)  3.3 * exp(1.0472im)
  3.3 * exp(1.0472im)  1.2 * exp(1.5708im)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-ni'>3</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>A</span><span class='hljl-t'>
-2×2 Matrix{Main.##WeaveSandBox#316.Polar}:
+2×2 Matrix{Main.##WeaveSandBox#343.Polar}:
  3.6 * exp(1.5708im)  9.9 * exp(1.0472im)
  9.9 * exp(1.0472im)  3.6 * exp(1.5708im)</span>
 </pre>
@@ -1446,13 +1466,13 @@ Error: promotion of types Float64 and Main.##WeaveSandBox#316.Polar failed to ch
 
 <pre class='hljl'>
 <span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-t'> </span><span class='hljl-oB'>/</span><span class='hljl-t'> </span><span class='hljl-ni'>2</span><span class='hljl-t'>
-Error: promotion of types Main.##WeaveSandBox#316.Polar and Int64 failed to change any arguments
+Error: promotion of types Main.##WeaveSandBox#343.Polar and Int64 failed to change any arguments
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>A</span><span class='hljl-t'>
-Error: MethodError: no method matching Main.##WeaveSandBox#316.Polar(::Int64)
+Error: MethodError: no method matching Main.##WeaveSandBox#343.Polar(::Int64)
 Closest candidates are:
   (::Type{T})(::T) where T&lt;:Number at ~/software/julia-1.7.3/share/julia/base/boot.jl:770
-  Main.##WeaveSandBox#316.Polar(::Any, !Matched::Any) at ~/Dropbox (Simons Foundation)/Documents/Simons Summer School/Simons Summer School 2022/julia_intro/julia_tutorial.jmd:2
+  Main.##WeaveSandBox#343.Polar(::Any, !Matched::Any) at ~/Dropbox (Simons Foundation)/Documents/Simons Summer School/Simons Summer School 2022/JuliaTutorial/julia_tutorial.jmd:2
   (::Type{T})(!Matched::AbstractChar) where T&lt;:Union{AbstractChar, Number} at ~/software/julia-1.7.3/share/julia/base/char.jl:50
   ...</span>
 </pre>
@@ -1466,12 +1486,12 @@ Closest candidates are:
 
 <pre class='hljl'>
 <span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-oB'>/</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-t'>
-Error: / not defined for Main.##WeaveSandBox#316.Polar
+Error: / not defined for Main.##WeaveSandBox#343.Polar
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-k'>import</span><span class='hljl-t'> </span><span class='hljl-n'>Base</span><span class='hljl-oB'>:</span><span class='hljl-t'> </span><span class='hljl-oB'>/</span><span class='hljl-t'>
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-oB'>/</span><span class='hljl-p'>(</span><span class='hljl-n'>z1</span><span class='hljl-oB'>::</span><span class='hljl-n'>Polar</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-oB'>::</span><span class='hljl-n'>Polar</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>Polar</span><span class='hljl-p'>(</span><span class='hljl-n'>z1</span><span class='hljl-oB'>.</span><span class='hljl-n'>r</span><span class='hljl-t'> </span><span class='hljl-oB'>/</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-oB'>.</span><span class='hljl-n'>r</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>z1</span><span class='hljl-oB'>.</span><span class='hljl-n'>θ</span><span class='hljl-t'> </span><span class='hljl-oB'>-</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-oB'>.</span><span class='hljl-n'>θ</span><span class='hljl-p'>)</span><span class='hljl-t'>
-/ (generic function with 302 methods)
+/ (generic function with 319 methods)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-oB'>/</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-t'>
 0.36363636363636365 * exp(0.5235987755982989im)</span>
@@ -1481,12 +1501,12 @@ Error: / not defined for Main.##WeaveSandBox#316.Polar
 
 <pre class='hljl'>
 <span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>z1</span><span class='hljl-oB'>^</span><span class='hljl-p'>(</span><span class='hljl-ni'>1</span><span class='hljl-t'> </span><span class='hljl-oB'>/</span><span class='hljl-t'> </span><span class='hljl-ni'>3</span><span class='hljl-p'>)</span><span class='hljl-t'>
-Error: promotion of types Main.##WeaveSandBox#316.Polar and Float64 failed to change any arguments
+Error: promotion of types Main.##WeaveSandBox#343.Polar and Float64 failed to change any arguments
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-k'>import</span><span class='hljl-t'> </span><span class='hljl-n'>Base</span><span class='hljl-oB'>:</span><span class='hljl-t'> </span><span class='hljl-oB'>^</span><span class='hljl-t'>
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-oB'>^</span><span class='hljl-p'>(</span><span class='hljl-n'>z</span><span class='hljl-oB'>::</span><span class='hljl-n'>Polar</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>n</span><span class='hljl-oB'>::</span><span class='hljl-n'>Float64</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-nf'>Polar</span><span class='hljl-p'>(</span><span class='hljl-n'>z</span><span class='hljl-oB'>.</span><span class='hljl-n'>r</span><span class='hljl-oB'>^</span><span class='hljl-n'>n</span><span class='hljl-p'>,</span><span class='hljl-t'> </span><span class='hljl-n'>n</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>z</span><span class='hljl-oB'>.</span><span class='hljl-n'>θ</span><span class='hljl-p'>)</span><span class='hljl-t'>
-^ (generic function with 226 methods)
+^ (generic function with 241 methods)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>z1</span><span class='hljl-oB'>^</span><span class='hljl-p'>(</span><span class='hljl-ni'>1</span><span class='hljl-t'> </span><span class='hljl-oB'>/</span><span class='hljl-t'> </span><span class='hljl-ni'>3</span><span class='hljl-p'>)</span><span class='hljl-t'>
 1.0626585691826111 * exp(0.5235987755982988im)</span>
@@ -1496,7 +1516,7 @@ Error: promotion of types Main.##WeaveSandBox#316.Polar and Float64 failed to ch
 
 <pre class='hljl'>
 <span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-oB'>+</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-t'>
-Error: + not defined for Main.##WeaveSandBox#316.Polar
+Error: + not defined for Main.##WeaveSandBox#343.Polar
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-k'>import</span><span class='hljl-t'> </span><span class='hljl-n'>Base</span><span class='hljl-oB'>:</span><span class='hljl-t'> </span><span class='hljl-oB'>+</span><span class='hljl-t'>
 
@@ -1506,7 +1526,7 @@ Error: + not defined for Main.##WeaveSandBox#316.Polar
          </span><span class='hljl-n'>z</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-n'>real</span><span class='hljl-t'> </span><span class='hljl-oB'>+</span><span class='hljl-t'> </span><span class='hljl-n'>imag</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>im</span><span class='hljl-t'>
          </span><span class='hljl-k'>return</span><span class='hljl-t'> </span><span class='hljl-nf'>Polar</span><span class='hljl-p'>(</span><span class='hljl-nf'>abs</span><span class='hljl-p'>(</span><span class='hljl-n'>z</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-nf'>angle</span><span class='hljl-p'>(</span><span class='hljl-n'>z</span><span class='hljl-p'>))</span><span class='hljl-t'>
        </span><span class='hljl-k'>end</span><span class='hljl-t'>
-+ (generic function with 575 methods)
++ (generic function with 594 methods)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-oB'>+</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-t'>
 4.380516088085142 * exp(1.1845996490735033im)</span>
@@ -1516,17 +1536,17 @@ Error: + not defined for Main.##WeaveSandBox#316.Polar
 
 <pre class='hljl'>
 <span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-p'>[</span><span class='hljl-n'>z1</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-p'>;</span><span class='hljl-t'> </span><span class='hljl-n'>z2</span><span class='hljl-t'> </span><span class='hljl-n'>z1</span><span class='hljl-p'>]</span><span class='hljl-t'>
-2×2 Matrix{Main.##WeaveSandBox#316.Polar}:
+2×2 Matrix{Main.##WeaveSandBox#343.Polar}:
  1.2 * exp(1.5708im)  3.3 * exp(1.0472im)
  3.3 * exp(1.0472im)  1.2 * exp(1.5708im)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>A</span><span class='hljl-t'>
-2×2 Matrix{Main.##WeaveSandBox#316.Polar}:
+2×2 Matrix{Main.##WeaveSandBox#343.Polar}:
  11.6768 * exp(2.2014im)    7.92 * exp(2.61799im)
    7.92 * exp(2.61799im)  11.6768 * exp(2.2014im)
 
 </span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>A</span><span class='hljl-t'> </span><span class='hljl-oB'>^</span><span class='hljl-t'> </span><span class='hljl-ni'>3</span><span class='hljl-t'>
-2×2 Matrix{Main.##WeaveSandBox#316.Polar}:
+2×2 Matrix{Main.##WeaveSandBox#343.Polar}:
  40.0959 * exp(-2.58066im)   44.7998 * exp(-2.8624im)
   44.7998 * exp(-2.8624im)  40.0959 * exp(-2.58066im)</span>
 </pre>
@@ -1581,21 +1601,38 @@ array([[19, 22],
 <h2>Automatic differentiation</h2>
 <p>Julia has impressive support for automatic differentation of a large promotion of the language. For example:</p>
 
-<p>using Pkg Pkg.add&#40;&quot;Zygote&quot;&#41; using Zygote sin&#39;&#40;π / 6&#41;, cos&#40;π / 6&#41; function f&#40;x&#41;   M &#61; &#91;exp&#40;x&#41; exp&#40;-x&#41;; exp&#40;-x&#41; exp&#40;x&#41;&#93;   return tr&#40;M * M&#41; end f&#39;&#40;0.2&#41; –-</p>
-<h1>More topics we could cover</h1>
+<pre class='hljl'>
+<span class='hljl-nB'>julia&gt; </span><span class='hljl-k'>using</span><span class='hljl-t'> </span><span class='hljl-n'>Pkg</span><span class='hljl-t'>
+
+</span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>Pkg</span><span class='hljl-oB'>.</span><span class='hljl-nf'>add</span><span class='hljl-p'>(</span><span class='hljl-s'>&quot;Zygote&quot;</span><span class='hljl-p'>)</span><span class='hljl-t'>
+
+</span><span class='hljl-nB'>julia&gt; </span><span class='hljl-k'>using</span><span class='hljl-t'> </span><span class='hljl-n'>Zygote</span><span class='hljl-t'>
+
+</span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>sin</span><span class='hljl-oB'>&#39;</span><span class='hljl-p'>(</span><span class='hljl-n'>π</span><span class='hljl-t'> </span><span class='hljl-oB'>/</span><span class='hljl-t'> </span><span class='hljl-ni'>6</span><span class='hljl-p'>),</span><span class='hljl-t'> </span><span class='hljl-nf'>cos</span><span class='hljl-p'>(</span><span class='hljl-n'>π</span><span class='hljl-t'> </span><span class='hljl-oB'>/</span><span class='hljl-t'> </span><span class='hljl-ni'>6</span><span class='hljl-p'>)</span><span class='hljl-t'>
+(0.8660254037844387, 0.8660254037844387)
+
+</span><span class='hljl-nB'>julia&gt; </span><span class='hljl-k'>function</span><span class='hljl-t'> </span><span class='hljl-nf'>f</span><span class='hljl-p'>(</span><span class='hljl-n'>x</span><span class='hljl-p'>)</span><span class='hljl-t'>
+         </span><span class='hljl-n'>M</span><span class='hljl-t'> </span><span class='hljl-oB'>=</span><span class='hljl-t'> </span><span class='hljl-p'>[</span><span class='hljl-nf'>exp</span><span class='hljl-p'>(</span><span class='hljl-n'>x</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-nf'>exp</span><span class='hljl-p'>(</span><span class='hljl-oB'>-</span><span class='hljl-n'>x</span><span class='hljl-p'>);</span><span class='hljl-t'> </span><span class='hljl-nf'>exp</span><span class='hljl-p'>(</span><span class='hljl-oB'>-</span><span class='hljl-n'>x</span><span class='hljl-p'>)</span><span class='hljl-t'> </span><span class='hljl-nf'>exp</span><span class='hljl-p'>(</span><span class='hljl-n'>x</span><span class='hljl-p'>)]</span><span class='hljl-t'>
+         </span><span class='hljl-k'>return</span><span class='hljl-t'> </span><span class='hljl-nf'>tr</span><span class='hljl-p'>(</span><span class='hljl-n'>M</span><span class='hljl-t'> </span><span class='hljl-oB'>*</span><span class='hljl-t'> </span><span class='hljl-n'>M</span><span class='hljl-p'>)</span><span class='hljl-t'>
+       </span><span class='hljl-k'>end</span><span class='hljl-t'>
+f (generic function with 1 method)
+
+</span><span class='hljl-nB'>julia&gt; </span><span class='hljl-n'>f</span><span class='hljl-oB'>&#39;</span><span class='hljl-p'>(</span><span class='hljl-nfB'>0.2</span><span class='hljl-p'>)</span><span class='hljl-t'>
+3.2860186064225245</span>
+</pre>
+
+<hr />
+<h1>Other important topics we don&#39;t have time to cover:</h1>
 <ul>
-<li><p>Automatic differentation with Zygote.</p>
+<li><p>Multithreading &#40;Threads.jl&#41;.</p>
 </li>
-<li><p>Multithreading.</p>
+<li><p>Profiling &#40;ProfileView.jl, PProf.jl&#41;.</p>
 </li>
-<li><p>Benchmarking and profiling.</p>
+<li><p>Type stability &#40;@code_warntype&#41;.</p>
 </li>
-<li><p>Type stability.</p>
-</li>
-<li><p>GPUs.</p>
+<li><p>GPUs &#40;CUDA.jl&#41;.</p>
 </li>
 </ul>
-<hr />
 
 
         <HR/>
