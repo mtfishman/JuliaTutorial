@@ -5,4 +5,4 @@ so you can follow along with the tutorial.
 
 You can view the tutorial here:
 
-(http://htmlpreview.github.io/?https://github.com/mtfishman/JuliaTutorial/blob/master/index.html)[http://htmlpreview.github.io/?https://github.com/mtfishman/JuliaTutorial/blob/master/index.html]
+[http://htmlpreview.github.io/?https://github.com/mtfishman/JuliaTutorial/blob/master/index.html](http://htmlpreview.github.io/?https://github.com/mtfishman/JuliaTutorial/blob/master/index.html)
