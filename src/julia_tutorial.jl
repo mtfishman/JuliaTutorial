@@ -282,7 +282,8 @@ function f(x)
   M = [exp(x) exp(-x); exp(-x) exp(x)]
   return tr(M * M)
 end
-f'(0.2)
-δ = 1e-8
+x = 0.2
+f'(x)
+δ = 1e-8;
 (f(x) - f(x - δ)) / δ # Compare against finite difference
 

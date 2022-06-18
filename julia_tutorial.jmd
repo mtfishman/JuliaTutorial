@@ -43,7 +43,7 @@ Base.show(io::IO, m::MIME"text/html", e::EndDropdown) = write(io, "</details>")
 5. Built with scientific computing in mind.
 
 ! BeginDropdown("Benchmarks")
-![](benchmarks.png)
+![](benchmarks.svg)
 ! EndDropdown()
 
 ! BeginDropdown("Julia vs. C++ vs. Python")
