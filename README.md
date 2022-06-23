@@ -1,8 +1,7 @@
-# Julia Tutorial for the Simons Summer School 2022
+# Julia Tutorial
 
-First Download Julia: [julialang.org/downloads](https://julialang.org/downloads/)
-so you can follow along with the tutorial.
+You can view the tutorial here: [mtfishman.github.io/JuliaTutorial](https://mtfishman.github.io/JuliaTutorial/).
 
-More detailed instructions can be found here:[julialang.org/downloads/platform](https://julialang.org/downloads/platform/).
+To get started with Julia, first download it here: [julialang.org/downloads](https://julialang.org/downloads/).
 
-You can view the tutorial here: [mtfishman.github.io/JuliaTutorial](https://mtfishman.github.io/JuliaTutorial/)
+More detailed installation instructions can be found here: [julialang.org/downloads/platform](https://julialang.org/downloads/platform/).
