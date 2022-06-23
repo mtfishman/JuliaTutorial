@@ -36,11 +36,10 @@ Base.show(io::IO, m::MIME"text/html", e::EndDropdown) = write(io, "</details>")
 
 # 1. Why Julia?
 
-1. Julia is easy to code and fast to run!
-2. Fast like C/C++, expressive and dynamic like Python.
-3. "Batteries included": REPL, package manager, multidimensional arrays, linear algebra, plotting.
-4. Free and open source.
-5. Built with scientific computing in mind.
+1. Julia is easy to code and fast to run - fast like C/C++, expressive and dynamic like Python.
+2. "Batteries included": REPL, package manager, multidimensional arrays, linear algebra, plotting.
+3. Free and open source - easy to read the source code of the language, which is mostly written in Julia itself.
+4. Built with scientific computing in mind.
 
 ! BeginDropdown("Benchmarks")
 ![](benchmarks.svg)
@@ -175,7 +174,7 @@ which I find takes 9.67 seconds on my laptop.
 
 # 5. Tutorial
 
-## Arithmatic
+## Arithmetic
 
 ```julia
 1 + 2
@@ -645,7 +644,7 @@ Julia has great functionality for calling out to other languages, such as
 `C`, `Fortran`, `Python`, and `R`.
 
 For calling out to Python, you can use `PythonCall.jl` (which is the next
-generation version of `PyCall.jl`).
+generation version of `PyCall.jl`, the current standard package for calling Python from Julia).
 
 For example:
 ```julia
@@ -666,14 +665,19 @@ C = pyconvert(Matrix, Cnp)
 
 ## Automatic differentiation
 
-Julia has impressive support for automatic differentation of a large promotion
-of the language. For example:
+Julia has impressive support for automatic differentation of a large portion
+of the language. For reverse mode automatic differentiation (which is more
+efficient when you want to take the gradient of a function that has more
+inputs than outputs), that standard package with the most language support
+is `Zygote.jl`.
 
+Here is a quick example of using Zygote:
 ```julia
 using Pkg
 Pkg.add("Zygote")
 using Zygote
-sin'(π / 6), cos(π / 6)
+gradient(sin, π / 6)[1], cos(π / 6)
+sin'(π / 6) # Shorthand notation for `gradient(sin, π / 6)[1]`
 function f(x)
   M = [exp(x) exp(-x); exp(-x) exp(x)]
   return tr(M * M)
@@ -684,9 +688,15 @@ f'(x)
 (f(x) - f(x - δ)) / δ # Compare against finite difference
 ```
 
+It also has great support for defining automatic differentation-agnostic
+custom derivatives of user defined types as well as user defined functions
+that are either too complicated for Zygote to differentiate automatically
+or would be more efficient with a hand-written derivative. See
+[ChainRules](https://juliadiff.org/ChainRulesCore.jl/dev/) for more information.
+
 ---
 
-# Other important topics we don't have time to cover:
+# Other important topics we plan to cover:
 
  - Multithreading (Threads.jl).
  - Profiling (ProfileView.jl, PProf.jl).
