@@ -277,7 +277,8 @@ C = pyconvert(Matrix, Cnp)
 using Pkg
 Pkg.add("Zygote")
 using Zygote
-sin'(π / 6), cos(π / 6)
+gradient(sin, π / 6)[1], cos(π / 6)
+sin'(π / 6) # Shorthand notation for `gradient(sin, π / 6)[1]`
 function f(x)
   M = [exp(x) exp(-x); exp(-x) exp(x)]
   return tr(M * M)
